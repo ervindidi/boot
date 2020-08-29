@@ -1,5 +1,8 @@
 package com.zy.dao;
 
+import org.springframework.data.repository.NoRepositoryBean;
+
+@NoRepositoryBean
 public class QueryItem {
     private String field;
     private Object value;

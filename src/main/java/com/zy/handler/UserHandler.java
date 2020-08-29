@@ -5,10 +5,9 @@ import com.zy.service.IUserService;
 import com.zy.util.ResultUtil;
 import com.zy.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 @RestController
@@ -16,11 +15,11 @@ public class UserHandler {
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/login/{userName}/{userPwd}/{imageCode}/{tokenImageCode}")
-    public HashMap<String,Object> login(@PathVariable String userName,
-           @PathVariable String userPwd, @PathVariable String imageCode,@PathVariable String tokenImageCode){
-        if(userName == null || userName.isEmpty()){
-            return ResultUtil.getResult("-1","用户名不能为空");
+    @PostMapping("/login/{userTelephone}/{userPwd}/{imageCode}")
+    public HashMap<String,Object> login(@PathVariable String userTelephone,
+                                        @PathVariable String userPwd, @PathVariable String imageCode, HttpSession session){
+        if(userTelephone == null || userTelephone.isEmpty()){
+            return ResultUtil.getResult("-1","手机号码不能为空");
         }
         if(userPwd == null || userPwd.isEmpty()){
             return ResultUtil.getResult("-2","密码不能为空");
@@ -28,20 +27,22 @@ public class UserHandler {
         if(imageCode == null || imageCode.isEmpty()){
             return ResultUtil.getResult("-3","验证码不能为空");
         }
-        if(!userName.matches(".{3,12}")){
-            return ResultUtil.getResult("-4","用户名必须是3-12位");
+        if(!userTelephone.matches(".{11}")){
+            return ResultUtil.getResult("-4","手机号码必须是11位");
         }
         if(!userPwd.matches(".{6,18}")){
-            return ResultUtil.getResult("-5","用户名必须是6-18位");
+            return ResultUtil.getResult("-5","密码必须是6-18位");
         }
         if(!imageCode.matches(".{4}")){
             return ResultUtil.getResult("-6","验证码必须是4位");
         }
-        String tokenCode = TokenUtil.getImageCode(tokenImageCode);
-        if(!imageCode.equalsIgnoreCase(tokenCode)){
+
+        String sessionImageCode = (String)session.getAttribute("imageCode");
+        System.out.println(session.getId()+"============"+imageCode + "---------"+sessionImageCode);
+        if(!imageCode.equalsIgnoreCase(sessionImageCode)){
             return ResultUtil.getResult("-7","验证码错误");
         }
-        UserInfo info = userService.findByUserName(userName);
+        UserInfo info = userService.findByUserTelephone(userTelephone);
         if(info == null){
             return ResultUtil.getResult("-8","用户不存在");
         }

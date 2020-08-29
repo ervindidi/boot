@@ -100,4 +100,42 @@ public class TokenUtil {
 		}
 		return null;
 	}
+
+    /**
+     * 签名生成  生成加密字符串
+     * @param ImageCode
+     * @return
+     */
+    public static String signMsg(String key,String value){
+
+        String token = null;
+        try {
+            Date expiresAt = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+            token = JWT.create()
+                    .withIssuer("zy")
+                    .withClaim(key, value)
+                    .withExpiresAt(expiresAt)
+                    // 使用了HMAC256加密算法。
+                    .sign(Algorithm.HMAC256(TOKEN_SECRET));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return token;
+
+    }
+
+    /**
+     * 获取用户数据
+     * @param token
+     * @return
+     */
+    public static String getMsg(String key,String token){
+        try {
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("zy").build();
+            DecodedJWT jwt = verifier.verify(token);
+            return jwt.getClaim(key).asString();
+        } catch (Exception e){
+        }
+        return null;
+    }
 }

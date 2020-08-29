@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -34,10 +35,10 @@ public class ImageValidate {
         //生成随机字串
         String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
         //存入会话session
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession();
         //把生成的验证码的字符串存到session中
         session.setAttribute("imageCode", verifyCode.toLowerCase());
-        System.out.println("imageCode： "+verifyCode.toLowerCase());
+        System.out.println("imageCode： "+verifyCode.toLowerCase()+"    sessionID:"+session.getId());
         //生成图片
         int w = 200, h = 80;
         VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);

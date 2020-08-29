@@ -58,4 +58,7 @@ public class UserInfo  {
 	/** 用户头像地址 */
 	private String userPhotoUrl;
 
+	/** 用户手机号码 */
+	private String userTelephone;
+
 }

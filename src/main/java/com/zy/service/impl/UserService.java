@@ -12,7 +12,7 @@ public class UserService extends BaseService<UserInfo,Integer>  implements IUser
     private UserInfoDao userInfoDao;
 
     @Override
-    public UserInfo findByUserName(String userName) {
-        return userInfoDao.findByUserName(userName);
+    public UserInfo findByUserTelephone(String userTelephone) {
+        return userInfoDao.findByUserTelephone(userTelephone);
     }
 }

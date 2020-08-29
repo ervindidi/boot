@@ -29,8 +29,8 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         String token = request.getParameter("token");
         if(token != null){
-            boolean result = TokenUtil.verify(token);
-            if(result){
+            HashMap<String,String>  map = TokenUtil.verify(token);
+            if(map != null){
                 System.out.println("通过拦截器");
                 return true;
             }
