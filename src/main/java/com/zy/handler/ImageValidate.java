@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +25,8 @@ import com.zy.util.VerifyCodeUtils;
  */
 @Controller
 public class ImageValidate {
+    private static final Logger log = LoggerFactory.getLogger(ImageValidate.class);
+
     @RequestMapping("/image.action")
     public void getImageCode(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -38,7 +42,7 @@ public class ImageValidate {
         HttpSession session = request.getSession();
         //把生成的验证码的字符串存到session中
         session.setAttribute("imageCode", verifyCode.toLowerCase());
-        System.out.println("imageCode： "+verifyCode.toLowerCase()+"    sessionID:"+session.getId());
+        log.debug("imageCode： "+verifyCode.toLowerCase()+"    sessionID:"+session.getId());
         //生成图片
         int w = 200, h = 80;
         VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);

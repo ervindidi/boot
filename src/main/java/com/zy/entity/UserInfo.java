@@ -9,6 +9,9 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 /**
@@ -35,9 +38,15 @@ public class UserInfo  {
 	private String userName;
 
 	/** 用户密码 */
+	@NotNull(message = "用户密码不能为空",groups = {IRegister.class})
+	@NotEmpty(message = "用户密码不能为空",groups = {IRegister.class})
+	@Pattern(regexp = "^.{6,18}$", message = "用户密码为6-18位数字",groups = {IRegister.class})
 	private String userPwd;
 
 	/** 用户昵称 */
+	@NotNull(message = "用户昵称不能为空",groups = {IRegister.class})
+	@NotEmpty(message = "用户昵称不能为空",groups = {IRegister.class})
+	@Pattern(regexp = "^.{2,16}$", message = "用户昵称为2-16位数字",groups = {IRegister.class})
 	private String userNick;
 
 	/** 用户积分 */
@@ -59,6 +68,21 @@ public class UserInfo  {
 	private String userPhotoUrl;
 
 	/** 用户手机号码 */
+	@NotNull(message = "手机号码不能为空",groups = {IRegister.class})
+	@NotEmpty(message = "手机号码不能为空")
+	@Pattern(regexp = "^\\d{11}$", message = "手机号码为11位数字")
 	private String userTelephone;
+
+	/** 推荐人id */
+	private String upId;
+
+	/** 城市 */
+	private String city;
+
+	/** 地区 */
+	private String area;
+
+	/** 学校 */
+	private String school;
 
 }
