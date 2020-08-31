@@ -1,8 +1,11 @@
 package com.zy.handler;
 
+import com.zy.entity.IChangePwd;
 import com.zy.entity.IRegister;
 import com.zy.entity.UserInfo;
 import com.zy.service.IUserService;
+import com.zy.util.CloudInfDemo;
+import com.zy.util.NumberUtil;
 import com.zy.util.ResultUtil;
 import com.zy.util.TokenUtil;
 import org.slf4j.Logger;
@@ -96,6 +99,59 @@ public class UserHandler {
             return ResultUtil.getResult("1","注册成功");
         }catch (Exception e){
             return ResultUtil.getResult("-3","注册失败");
+        }
+    }
+
+    @PostMapping("/sendCode")
+    public HashMap<String,Object> sendCode(String userTelephone, HttpSession session){
+        if(userTelephone == null || userTelephone.isEmpty()){
+            return ResultUtil.getResult("-1","手机号码不能为空");
+        }
+        if(!userTelephone.matches("\\d{11}")){
+            return ResultUtil.getResult("-2","手机号码必须是11位数字");
+        }
+        String code = NumberUtil.newCode();
+        session.setAttribute("imageCode",code);
+        String result = CloudInfDemo.sendSmsCode(userTelephone,code);
+        return ResultUtil.getResult("1","短信发送成功");
+        /*
+        log.info("-------userTelephone-----------code--------------"+code+"    sessionID:"+session.getId());
+        if(result.equals("0") || result.contains(":0,")){
+            return ResultUtil.getResult("1","短信发送成功");
+        }else{
+            return ResultUtil.getResult("-3","短信发送失败");
+        }*/
+    }
+
+    @PostMapping("/changePwd")
+    public HashMap<String,Object> changePwd(@Validated(IChangePwd.class) UserInfo userInfo,
+                                      BindingResult br,String imageCode, HttpSession session){
+        if(br.hasErrors()){//参数异常
+            HashMap<String,String> map = new HashMap<String,String>();
+            for (FieldError fe : br.getFieldErrors()){
+                map.put(fe.getField()+"Error",fe.getDefaultMessage());
+            }
+            return ResultUtil.getResult("-1","参数异常",map);
+        }
+        if(imageCode == null || imageCode.isEmpty()){
+            return ResultUtil.getResult("-2","验证码不能为空");
+        }
+        String sessionImageCode = (String)session.getAttribute("imageCode");
+        log.info(sessionImageCode+"--------------"+imageCode+"    sessionID:"+session.getId());
+        if(!imageCode.equalsIgnoreCase(sessionImageCode)){
+            return ResultUtil.getResult("-7","验证码错误");
+        }
+        UserInfo info = userService.findByUserTelephone(userInfo.getUserTelephone());
+        if(info==null){
+            return ResultUtil.getResult("-3","用户不存在");
+        }
+        try {
+            info.setUserPwd(userInfo.getUserPwd());
+            userService.update(info);
+
+            return ResultUtil.getResult("1","密码修改成功");
+        }catch (Exception e){
+            return ResultUtil.getResult("-3","密码修改失败");
         }
     }
 }
