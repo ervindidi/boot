@@ -26,6 +26,7 @@ public class UserHandler {
     @PostMapping("/login/{userTelephone}/{userPwd}/{imageCode}")
     public HashMap<String,Object> login(@PathVariable String userTelephone,
                                         @PathVariable String userPwd, @PathVariable String imageCode, HttpSession session){
+        log.info("--------------"+imageCode+"    sessionID:"+session.getId());
         if(userTelephone == null || userTelephone.isEmpty()){
             return ResultUtil.getResult("-1","手机号码不能为空");
         }
@@ -67,7 +68,7 @@ public class UserHandler {
     @PostMapping("/reg")
     public HashMap<String,Object> reg(@Validated(IRegister.class) UserInfo userInfo,
                                       BindingResult br,String imageCode, HttpSession session){
-        log.debug("--------------"+imageCode+"    sessionID:"+session.getId());
+        log.info("--------------"+imageCode+"    sessionID:"+session.getId());
         if(br.hasErrors()){//参数异常
             HashMap<String,String> map = new HashMap<String,String>();
             for (FieldError fe : br.getFieldErrors()){
@@ -79,7 +80,7 @@ public class UserHandler {
             return ResultUtil.getResult("-2","验证码异常");
         }
         String sessionImageCode = (String)session.getAttribute("imageCode");
-        log.debug(sessionImageCode+"--------------"+imageCode+"    sessionID:"+session.getId());
+        log.info(sessionImageCode+"--------------"+imageCode+"    sessionID:"+session.getId());
         if(!imageCode.equalsIgnoreCase(sessionImageCode)){
             return ResultUtil.getResult("-7","验证码错误");
         }

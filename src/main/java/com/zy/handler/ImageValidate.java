@@ -42,7 +42,7 @@ public class ImageValidate {
         HttpSession session = request.getSession();
         //把生成的验证码的字符串存到session中
         session.setAttribute("imageCode", verifyCode.toLowerCase());
-        log.debug("imageCode： "+verifyCode.toLowerCase()+"    sessionID:"+session.getId());
+        log.info("imageCode： "+verifyCode.toLowerCase()+"    sessionID:"+session.getId());
         //生成图片
         int w = 200, h = 80;
         VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);
