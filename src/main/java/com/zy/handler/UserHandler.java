@@ -91,7 +91,7 @@ public class UserHandler {
             return ResultUtil.getResult("-3","手机号码已经被注册");
         }
         try {
-            userInfo.setUserIntegral(0);
+            userInfo.setIntegral(0);
             userInfo.setUserMoney(0d);
             userInfo.setUserRegTime(new Date());
             userService.add(userInfo);
@@ -153,5 +153,22 @@ public class UserHandler {
         }catch (Exception e){
             return ResultUtil.getResult("-3","密码修改失败");
         }
+    }
+
+    @RequestMapping("/test")
+    public HashMap<String,Object> test(){
+        UserInfo info = userService.findByUserTelephone("18611111111");
+        return ResultUtil.getResult("1","请求成功",info);
+    }
+
+    @RequestMapping("/login")
+    public HashMap<String,Object> loginTest(String userTelephone){
+        UserInfo info = userService.findByUserTelephone(userTelephone);
+        String tokenInfo = TokenUtil.sign(info);
+        HashMap<String,String> data = new HashMap<String,String>();
+        data.put("tokenInfo",tokenInfo);
+        data.put("userName",info.getUserName());
+        data.put("userNike",info.getUserNick());
+        return ResultUtil.getResult("1","登陆成功",data);
     }
 }

@@ -10,7 +10,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.zy.entity.UserInfo;
 
 public class TokenUtil {
-	 private static final long EXPIRE_TIME= 30*24*60*60*1000;//30天
+	 private static final long EXPIRE_TIME= 20*24*60*60*1000;//20天
 	 private static final String TOKEN_SECRET="tokenjoinlabs321";  //密钥盐
 
 	 /**
@@ -26,7 +26,7 @@ public class TokenUtil {
 			token = JWT.create()
 					.withIssuer("zy")
 					.withClaim("userName", user.getUserName())
-					.withClaim("userId", ""+user.getUserId())
+					.withClaim("id", ""+user.getId())
 					.withExpiresAt(expiresAt)
 					// 使用了HMAC256加密算法。
 					.sign(Algorithm.HMAC256(TOKEN_SECRET));
@@ -49,11 +49,7 @@ public class TokenUtil {
 			JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("zy").build();
 			DecodedJWT jwt = verifier.verify(token);
 			System.out.println("认证通过：");
-			System.out.println("issuer: " + jwt.getIssuer());
-			System.out.println("userId: " + jwt.getClaim("userId").asString());
-			System.out.println("username: " + jwt.getClaim("userName").asString());
-			System.out.println("过期时间：      " + jwt.getExpiresAt());
-			map.put("userId",jwt.getClaim("userId").asString());
+			map.put("id",jwt.getClaim("id").asString());
 			map.put("userName",jwt.getClaim("userName").asString());
 			return map;
 		} catch (Exception e){
@@ -65,7 +61,7 @@ public class TokenUtil {
 
 	/**
 	 * 签名生成  生成加密字符串
-	 * @param ImageCode
+	 * @param imageCode
 	 * @return
 	 */
 	public static String signImageCode(String imageCode){
@@ -103,7 +99,7 @@ public class TokenUtil {
 
     /**
      * 签名生成  生成加密字符串
-     * @param ImageCode
+     * @param value
      * @return
      */
     public static String signMsg(String key,String value){

@@ -96,5 +96,14 @@
             <artifactId>commons-httpclient</artifactId>
             <version>3.1</version>
         </dependency>
+
+        <!-- 拼多多 -->
+        <dependency>
+            <groupId>pdd</groupId>
+            <artifactId>duoduo</artifactId>
+            <version>1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/pop-sdk-1.9.45-all.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -23,7 +24,7 @@ import java.util.Date;
 @ToString(exclude = {})
 @Accessors(chain = true)
 @Table ( name ="article" )
-public class Article  {
+public class Article  implements Serializable {
 
 
 	/** 文字id */

@@ -1,5 +1,6 @@
 package com.zy.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -23,16 +25,16 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@ToString(exclude = {})
 @Accessors(chain = true)
-@Table ( name ="user_info" )
-public class UserInfo  {
+@ToString
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
+public class UserInfo implements Serializable {
 
 
 	/** 用户id */
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Integer userId;
+	private Integer id;
 
 	/** 用户命名 */
 	private String userName;
@@ -50,7 +52,10 @@ public class UserInfo  {
 	private String userNick;
 
 	/** 用户积分 */
-	private Integer userIntegral;
+	private Integer integral;
+
+	/** 用户金豆 */
+	private Integer gold;
 
 	/** 用户等级 0-游客 1-普通用户 2-年会员 3-终身会员 */
 	private String userType;
