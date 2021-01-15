@@ -157,8 +157,8 @@ public class UserHandler {
 
     @RequestMapping("/test")
     public HashMap<String,Object> test(){
-        UserInfo info = userService.findByUserTelephone("18611111111");
-        return ResultUtil.getResult("1","请求成功",info);
+        int i = 1/0;
+        return ResultUtil.getResult("1","请求成功");
     }
 
     @RequestMapping("/login")
