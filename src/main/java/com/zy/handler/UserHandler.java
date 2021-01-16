@@ -3,6 +3,7 @@ package com.zy.handler;
 import com.zy.entity.IChangePwd;
 import com.zy.entity.IRegister;
 import com.zy.entity.UserInfo;
+import com.zy.exception.MyException;
 import com.zy.service.IUserService;
 import com.zy.util.CloudInfDemo;
 import com.zy.util.NumberUtil;
@@ -159,6 +160,14 @@ public class UserHandler {
     @RequestMapping("/test")
     public HashMap<String,Object> test(HttpServletRequest request){
         int i = 1/0;
+        return ResultUtil.getResult(request,"1","请求成功");
+    }
+
+    @RequestMapping("/noTokenTest")
+    public HashMap<String,Object> noTokenTest(HttpServletRequest request,String token) throws MyException {
+        if(token == null){
+            throw new MyException("没有token");
+        }
         return ResultUtil.getResult(request,"1","请求成功");
     }
 
