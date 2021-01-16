@@ -162,6 +162,11 @@ public class UserHandler {
         return ResultUtil.getResult(request,"1","请求成功");
     }
 
+    @RequestMapping("/test2")
+    public HashMap<String,Object> test2(HttpServletRequest request){
+        return ResultUtil.getResult(request,"1","请求成功");
+    }
+
     @RequestMapping("/login")
     public HashMap<String,Object> loginTest(HttpServletRequest request,String userTelephone){
         UserInfo info = userService.findByUserTelephone(userTelephone);

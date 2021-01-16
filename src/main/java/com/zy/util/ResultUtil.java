@@ -25,7 +25,7 @@ public class ResultUtil {
 		map.put("code", code);
 		map.put("msg", msg);
 
-		log.debug("请求地址："+request.getRequestURI()+"   返回码 : "+code + "   返回信息 : "+msg);
+		log.info("请求地址："+request.getRequestURI()+"   返回码 : "+code + "   返回信息 : "+msg);
 		return map;
 	}
 	
@@ -42,7 +42,7 @@ public class ResultUtil {
 		map.put("msg", msg);
 		map.put("data", data);
 
-		log.debug("请求地址："+request.getRequestURI()+"   返回码 : "+code + "   返回信息 : "+msg);
+		log.info("请求地址："+request.getRequestURI()+"   返回码 : "+code + "   返回信息 : "+msg);
 		return map;
 	}
 	
@@ -60,7 +60,7 @@ public class ResultUtil {
 		map.put("count", count);
 		map.put("data", data);
 
-		log.debug("请求地址："+request.getRequestURI()+"   返回码 : "+code + "   返回信息 : "+msg);
+		log.info("请求地址："+request.getRequestURI()+"   返回码 : "+code + "   返回信息 : "+msg);
 		return map;
 	}
 	
@@ -77,7 +77,7 @@ public class ResultUtil {
 		map.put("msg", msg);
 		map.put("list", list);
 
-		log.debug("请求地址："+request.getRequestURI()+"   返回码 : "+code + "   返回信息 : "+msg);
+		log.info("请求地址："+request.getRequestURI()+"   返回码 : "+code + "   返回信息 : "+msg);
 		return map;
 	}
 }

@@ -40,9 +40,9 @@ public class GlobalException {
         data.put("uri",uri);
         data.put("msg",emsg);
 
-        log.info("异常请求 : "+uri + "   异常信息 : "+emsg);
+        log.error("异常请求 : "+uri + "   异常信息 : "+emsg);
 
-        HashMap<String,Object> map = ResultUtil.getResult("-101","系统异常",data);
+        HashMap<String,Object> map = ResultUtil.getResult(request,"-101","系统异常",data);
         String jsonString =  JSONObject.toJSONString(map);
         response.getWriter().println(jsonString);
     }
