@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -30,7 +31,7 @@ public class LotteryDetailService extends BaseService<LotteryDetail,Integer> imp
     private GoldDetailDao goldDetailDao;
 
     @Transactional(rollbackFor = Exception.class)
-    public HashMap<String,Object> lottery(String token){
+    public HashMap<String,Object> lottery(HttpServletRequest request, String token){
         HashMap<String,String> map = TokenUtil.verify(token);
         Integer user_id = new Integer( map.get("id") );
 
@@ -50,7 +51,7 @@ public class LotteryDetailService extends BaseService<LotteryDetail,Integer> imp
         String msg = "消耗100积分，获得奖品："+gifts[index];
         UserInfo userInfo = userInfoDao.findById(user_id).get();
         if(userInfo.getIntegral() < 100){
-            return ResultUtil.getResult("-2","积分不足");
+            return ResultUtil.getResult(request,"-2","积分不足");
         }
 
         LotteryDetail lotteryDetail = new LotteryDetail().setTime(new Date()).
@@ -67,6 +68,6 @@ public class LotteryDetailService extends BaseService<LotteryDetail,Integer> imp
         integralDetailDao.save(integralDetail);
         goldDetailDao.save(goldDetail);
         userInfoDao.save(userInfo);
-        return ResultUtil.getResult("0",msg,index);
+        return ResultUtil.getResult(request,"0",msg,index);
     }
 }

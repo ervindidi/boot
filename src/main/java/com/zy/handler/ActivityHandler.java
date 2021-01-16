@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sound.midi.Soundbank;
 import javax.sound.sampled.Line;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class ActivityHandler {
 
     //抽奖
     @RequestMapping("/lottery.action")
-    public HashMap<String,Object> lottery(String token){
-        return lotteryDetailService.lottery(token);
+    public HashMap<String,Object> lottery(HttpServletRequest request, String token){
+        return lotteryDetailService.lottery(request,token);
     }
 }
