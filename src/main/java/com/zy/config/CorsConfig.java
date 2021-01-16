@@ -9,6 +9,7 @@ import org.springframework.web.filter.CorsFilter;
 
 /**
  * 跨域配置
+ * junliu
  */
 @Configuration
 public class CorsConfig {
